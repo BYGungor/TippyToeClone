@@ -9,10 +9,11 @@ public class GirlController : MonoBehaviour
     public enum FootOrder
     {
         RIGHTFOOT,
-        LEFTFOOT,
+        LEFTFOOT
     }
 
     private FootOrder _footOrder;
+
    [SerializeField] private FullBodyBipedIK _bipedIK;
 
     private Vector3 _targetPos;
@@ -24,7 +25,7 @@ public class GirlController : MonoBehaviour
 
     private Camera _camera;
 
-  
+    private float timer;
     private void Awake()
     {
 
@@ -57,6 +58,7 @@ public class GirlController : MonoBehaviour
         {
             _mouseFree = false;
             _mouseDownOnce = false;
+            
             if (_footOrder==FootOrder.LEFTFOOT)
             {
                 _targetPos = new Vector3(-0.1f, _bipedIK.solver.leftFootEffector.position.y + 0.55f, _bipedIK.solver.leftFootEffector.position.z + 1.4f);
@@ -72,21 +74,22 @@ public class GirlController : MonoBehaviour
         }
         if (_mouseDownStill)
         {
-            
+           
             if (_footOrder==FootOrder.LEFTFOOT)
             {
-                _bipedIK.solver.leftFootEffector.position = Vector3.Lerp(_bipedIK.solver.leftFootEffector.position, _targetPos, 0.008f);
+                _bipedIK.solver.leftFootEffector.position = Vector3.Lerp(_bipedIK.solver.leftFootEffector.position, _targetPos, 0.013f);
                 
+
             }
             else
             {
-                _bipedIK.solver.rightFootEffector.position = Vector3.Lerp(_bipedIK.solver.rightFootEffector.position, _targetPos, 0.008f);
+                _bipedIK.solver.rightFootEffector.position = Vector3.Lerp(_bipedIK.solver.rightFootEffector.position, _targetPos, 0.013f);
 
             }
 
-            transform.position = Vector3.Lerp(transform.position, new Vector3(transform.position.x, transform.position.y, Mathf.Abs(Mathf.Min(_bipedIK.solver.rightFootEffector.position.z, _bipedIK.solver.leftFootEffector.position.z) + (Mathf.Max(_bipedIK.solver.rightFootEffector.position.z, _bipedIK.solver.leftFootEffector.position.z) - Mathf.Min(_bipedIK.solver.rightFootEffector.position.z, _bipedIK.solver.leftFootEffector.position.z)) / 2)), 0.15f);
+            transform.position = Vector3.Lerp(transform.position, new Vector3(transform.position.x, transform.position.y, Mathf.Abs(Mathf.Min(_bipedIK.solver.rightFootEffector.position.z, _bipedIK.solver.leftFootEffector.position.z) + (Mathf.Max(_bipedIK.solver.rightFootEffector.position.z, _bipedIK.solver.leftFootEffector.position.z) - Mathf.Min(_bipedIK.solver.rightFootEffector.position.z, _bipedIK.solver.leftFootEffector.position.z)) / 2)), 0.25f);
             _camera.transform.localPosition = Vector3.Lerp(_camera.transform.localPosition, new Vector3(_camera.transform.localPosition.x, _camera.transform.localPosition.y, Mathf.Abs(Mathf.Min(_bipedIK.solver.rightFootEffector.position.z, _bipedIK.solver.leftFootEffector.position.z) + (Mathf.Max(_bipedIK.solver.rightFootEffector.position.z, _bipedIK.solver.leftFootEffector.position.z) - Mathf.Min(_bipedIK.solver.rightFootEffector.position.z, _bipedIK.solver.leftFootEffector.position.z)) / 2) + 0.5f), 0.09f);
-
+           
         }
        
         if (_mouseFree)
